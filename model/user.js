@@ -8,14 +8,14 @@ const readData = () => {
   return new Promise((resolve, reject) => {
     fs.readFile(usersPath, (err, data) => {
       if (err) return reject(err);
-      resolve(JSON.stringify(data.toString()));
+      resolve(JSON.parse(data.toString()));
     });
   });
 };
 
 const writeData = (data) => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(usersPath, data, (err) => {
+    fs.writeFile(usersPath, JSON.stringify(data), (err) => {
       if (err) return reject(err);
       resolve();
     });
@@ -25,7 +25,7 @@ const writeData = (data) => {
 exports.findUser = async (email) => {
   try {
     const users = await readData();
-    const user = users.find((u) => users.email === email);
+    const user = users.find((u) => u.email === email);
     return user;
   } catch (err) {
     throw err;
@@ -33,6 +33,7 @@ exports.findUser = async (email) => {
 };
 
 exports.createUser = async (email, password) => {
+    console.log(email , password);
   try {
     const existingUsers = await readData();
     const updatedUsers = [...existingUsers, { email, password, id: uuid() }];
