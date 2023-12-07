@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
   try {
     const resp = await login(req.body.email, req.body.password);
-    resp.status(200).send(resp);
+    res.status(200).send(resp);
   } catch (err) {
     res.send(err);
   }
@@ -14,7 +14,7 @@ router.post("/login", async (req, res) => {
 router.post("/signup", async (req, res) => {
   try {
     const resp = await createUser(req.body.email, req.body.password);
-    resp.status(200).send(resp);
+    res.status(200).send(resp);
   } catch (err) {
     res.send(err);
   }
