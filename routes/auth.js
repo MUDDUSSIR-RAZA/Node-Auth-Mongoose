@@ -1,6 +1,8 @@
 const express = require("express");
 const { createUser, login } = require("../controllers/auth");
+const { createUserM } = require("../controllers/authMongo");
 const router = express.Router();
+
 
 router.post("/login", async (req, res) => {
   try {
@@ -14,6 +16,15 @@ router.post("/login", async (req, res) => {
 router.post("/signup", async (req, res) => {
   try {
     const resp = await createUser(req.body.email, req.body.password);
+    res.status(200).send(resp);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+router.post("/signUp/mongo", async (req, res) => {
+  try {
+    const resp = await createUserM(req.body.email, req.body.password);
     res.status(200).send(resp);
   } catch (err) {
     res.send(err);
