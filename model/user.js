@@ -1,44 +1,21 @@
-const fs = require("fs");
-const path = require("path");
-const { uuid } = require("uuidv4");
+const Users = require("../model/db/users");
 
-const usersPath = path.join(process.cwd(), "data", "users.json");
-
-const readData = () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(usersPath, (err, data) => {
-      if (err) return reject(err);
-      resolve(JSON.parse(data.toString()));
-    });
-  });
-};
-
-const writeData = (data) => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(usersPath, JSON.stringify(data), (err) => {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
-};
-
-exports.findUser = async (email) => {
+exports.createUser = async (email, password) => {
   try {
-    const users = await readData();
-    const user = users.find((u) => u.email === email);
-    return user;
+    const user = new Users({
+      email: email,
+      password: password,
+    });
+    await user.save();
+    return "User Successfully SigUp!"
   } catch (err) {
     throw err;
   }
 };
 
-exports.createUser = async (email, password) => {
-    console.log(email , password);
+exports.findUser = async (email) => {
   try {
-    const existingUsers = await readData();
-    const updatedUsers = [...existingUsers, { email, password, id: uuid() }];
-    await writeData(updatedUsers);
-    return "User Successfully Created";
+    return await Users.findOne({ email });
   } catch (err) {
     throw err;
   }
