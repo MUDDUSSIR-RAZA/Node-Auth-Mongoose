@@ -1,1 +1,0 @@
-exports.SECRET_KEY = "This is secret key";
