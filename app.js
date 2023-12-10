@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const path = require("path");
-const mongoose = require("./model/connection")
 
 const auth = require("./routes/auth");
 
